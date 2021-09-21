@@ -1,3 +1,52 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "next",
+    "prettier",
+    "airbnb",
+    "airbnb-base",
+    "airbnb-typescript",
+    "plugin:jsx-a11y/recommended"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "react/jsx-one-expression-per-line": "off",
+    "react/react-in-jsx-scope": "off",
+    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.js", "**/*.test.jsx"],
+      "env": {
+        "jest": true
+      }
+    }
+  ],
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@root/*", "./src"],
+          ["@api/*", "./src/api"],
+          ["@api", "./src/api/index.js"],
+          ["@assets/*", "./src/assets"],
+          ["@components/*", "./src/components"],
+          ["@consts/*", "./src/consts"],
+          ["@contextProviders/*", "./src/contextProviders"],
+          ["@styles/*", "./src/styles"],
+          ["@utils/*", "./src/utils"],
+          ["@hoc/*", "./src/hoc"],
+          ["@hooks/*", "./src/hooks"],
+          ["@store/*", "./src/store"],
+          ["@contentfulDataTransformers/*", "./src/contentfulDataTransformers"]
+        ],
+        "extensions": [".js", ".jsx"]
+      }
+    }
+  }
 }
