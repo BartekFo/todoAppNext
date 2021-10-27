@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+@layer base {
+    body {
+        @apply min-h-screen bg-lightTheme-veryLightGray dark:bg-darkTheme-veryDark;
+    }
+}

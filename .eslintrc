@@ -1,15 +1,16 @@
 {
+  "plugins": ["prettier"],
   "extends": [
     "next/core-web-vitals",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "next",
-    "prettier",
     "airbnb",
     "airbnb-base",
     "airbnb-typescript",
-    "plugin:jsx-a11y/recommended"
+    "plugin:jsx-a11y/recommended",
+    "plugin:prettier/recommended"
   ],
   "parserOptions": {
     "project": "./tsconfig.json"
@@ -17,7 +18,9 @@
   "rules": {
     "react/jsx-one-expression-per-line": "off",
     "react/react-in-jsx-scope": "off",
-    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }]
+    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }],
+    "object-curly-newline": "off",
+    "react/prop-types": 0
   },
   "overrides": [
     {
