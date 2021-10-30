@@ -29,7 +29,12 @@ const Navbar = () => {
     );
   };
   return (
-    <nav className="mt-11 text-lightTheme-veryLightGray px-6 flex justify-between items-center">
+    <nav
+      className="mt-11 mx-auto sm:mt-16 px-6 sm:px-0
+      flex justify-between items-center
+      text-lightTheme-veryLightGray
+      max-w-screen-sm"
+    >
       <h1 className="text-3xl font-bold tracking-widest">TODO</h1>
       {renderThemeChanger()}
     </nav>

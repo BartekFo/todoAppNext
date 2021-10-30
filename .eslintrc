@@ -20,7 +20,9 @@
     "react/react-in-jsx-scope": "off",
     "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }],
     "object-curly-newline": "off",
-    "react/prop-types": 0
+    "react/prop-types": 0,
+    "react/require-default-props": 0,
+    "react/jsx-props-no-spreading": "off"
   },
   "overrides": [
     {

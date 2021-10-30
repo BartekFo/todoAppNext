@@ -15,6 +15,6 @@ body {
 
 @layer base {
     body {
-        @apply min-h-screen bg-lightTheme-veryLightGray dark:bg-darkTheme-veryDark;
+        @apply min-h-screen bg-lightTheme-blue-veryLightGrayish dark:bg-darkTheme-veryDark;
     }
 }
