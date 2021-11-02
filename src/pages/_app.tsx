@@ -4,6 +4,7 @@ import { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
 
 import '@styles/global.css';
+import { AuthProvider } from '@contextProviders/AuthContext';
 
 const App: FunctionComponent<AppProps> = (props) => {
   const { Component, pageProps } = props;
@@ -17,7 +18,9 @@ const App: FunctionComponent<AppProps> = (props) => {
       </Head>
       <ThemeProvider enableSystem attribute="class">
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-        <Component {...pageProps} />
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
       </ThemeProvider>
     </>
   );
