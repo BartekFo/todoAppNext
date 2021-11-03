@@ -1,12 +1,22 @@
-import React, { FC } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 import Checkbox from '@components/checkbox/Checkbox';
 import { VscChromeClose } from 'react-icons/vsc';
 import { Draggable, resetServerContext } from 'react-beautiful-dnd';
+import { TaskCardType } from '@root/@types/tasksTypes';
 
-const TaskCard: FC<{ task: { id: string; name: string }; index: number }> = ({
+const TaskCard: FC<TaskCardType> = ({
   task: { id, name },
   index,
+  changeTaskStatus,
+  deleteSingleTask,
 }) => {
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsCheckboxChecked((prevState) => !prevState);
+    changeTaskStatus(event.target.checked, id);
+  };
+
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
@@ -19,9 +29,9 @@ const TaskCard: FC<{ task: { id: string; name: string }; index: number }> = ({
       bg-lightTheme-veryLightGray dark:bg-darkTheme-veryDarkDesaturated"
         >
           {resetServerContext()}
-          <Checkbox />
+          <Checkbox isChecked={isCheckboxChecked} handleChange={handleCheckboxChange} />
           <p className="prose text-lightTheme-blue-darkGrayish text-lg w-full ">{name}</p>
-          <button type="button" className="cursor-pointer">
+          <button type="button" className="cursor-pointer" onClick={() => deleteSingleTask(id)}>
             <VscChromeClose
               className="text-2xl opacity-40 mr-4 ml-2
         text-lightTheme-blue-veryDarkGrayish
