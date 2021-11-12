@@ -30,7 +30,17 @@ const TaskCard: FC<TaskCardType> = ({
         >
           {resetServerContext()}
           <Checkbox isChecked={isCheckboxChecked} handleChange={handleCheckboxChange} />
-          <p className="prose text-lightTheme-blue-darkGrayish text-lg w-full ">{name}</p>
+          <p
+            className={`
+              ${
+                isCheckboxChecked
+                  ? 'line-through text-lightTheme-blue-lightGrayish dark:text-darkTheme-darkerGrayish'
+                  : 'text-lightTheme-blue-darkGrayish'
+              }
+              prose text-lg w-full`}
+          >
+            {name}
+          </p>
           <button type="button" className="cursor-pointer" onClick={() => deleteSingleTask(id)}>
             <VscChromeClose
               className="text-2xl opacity-40 mr-4 ml-2

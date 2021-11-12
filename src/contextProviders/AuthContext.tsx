@@ -2,7 +2,7 @@ import { createContext, FC, useContext, useEffect, useState } from 'react';
 import { signInWithRedirect, signOut } from 'firebase/auth';
 
 import { auth, provider } from '@root/firebase/clientApp';
-import { AuthContextType, FirebaseUser } from '@root/@types/contextTypes';
+import { AuthContextType, FirebaseUser } from '@root/@types/authContextTypes';
 
 const defaultValue = {
   user: null,

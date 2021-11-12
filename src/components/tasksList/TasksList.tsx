@@ -1,22 +1,22 @@
 import React from 'react';
-import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import TaskCard from '@components/taskCard/TaskCard';
 import NavigationBar from '@components/navigationBar/NavigationBar';
 import NavigationBarMobile from '@components/navigationBarMobile/NavigationBarMobile';
-import useTasks from '@hooks/useTasks';
+import { useTasks } from '@contextProviders/TaskContext';
 
 const TasksList = () => {
-  const { setTasksArr, taskArr, deleteCompletedTasks, changeTaskStatus, deleteSingleTask } =
-    useTasks();
-
-  const handleOnDragEnd = (result: DropResult) => {
-    const items = Array.from(taskArr);
-    const [reorderedItems] = items.splice(result.source.index, 1);
-    if (result.destination) items.splice(result.destination.index, 0, reorderedItems);
-
-    setTasksArr(items);
-  };
+  const {
+    handleOnDragEnd,
+    taskArr,
+    deleteCompletedTasks,
+    changeTaskStatus,
+    deleteSingleTask,
+    filterActiveTasks,
+    filterCompletedTasks,
+    filterAllTasks,
+  } = useTasks();
 
   return (
     <>
@@ -38,12 +38,22 @@ const TasksList = () => {
                 />
               ))}
               {provided.placeholder}
-              <NavigationBar taskArr={taskArr} deleteCompletedTasks={deleteCompletedTasks} />
+              <NavigationBar
+                taskArr={taskArr}
+                deleteCompletedTasks={deleteCompletedTasks}
+                filterAllTasks={filterAllTasks}
+                filterActiveTasks={filterActiveTasks}
+                filterCompletedTasks={filterCompletedTasks}
+              />
             </ul>
           )}
         </Droppable>
       </DragDropContext>
-      <NavigationBarMobile />
+      <NavigationBarMobile
+        filterAllTasks={filterAllTasks}
+        filterActiveTasks={filterActiveTasks}
+        filterCompletedTasks={filterCompletedTasks}
+      />
     </>
   );
 };

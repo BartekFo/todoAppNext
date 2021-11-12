@@ -5,6 +5,7 @@ import { ThemeProvider } from 'next-themes';
 
 import '@styles/global.css';
 import { AuthProvider } from '@contextProviders/AuthContext';
+import { TasksProvider } from '@contextProviders/TaskContext';
 
 const App: FunctionComponent<AppProps> = (props) => {
   const { Component, pageProps } = props;
@@ -19,7 +20,9 @@ const App: FunctionComponent<AppProps> = (props) => {
       <ThemeProvider enableSystem attribute="class">
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <AuthProvider>
-          <Component {...pageProps} />
+          <TasksProvider>
+            <Component {...pageProps} />
+          </TasksProvider>
         </AuthProvider>
       </ThemeProvider>
     </>
