@@ -1,11 +1,21 @@
-import { createContext, FC, useContext, useState } from 'react';
+import { createContext, FC, useContext, useEffect, useState } from 'react';
 import { DropResult } from 'react-beautiful-dnd';
-import { collection, addDoc } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  doc,
+  onSnapshot,
+  updateDoc,
+  deleteDoc,
+  query,
+  where,
+  orderBy,
+} from 'firebase/firestore';
 
 import { TaskContextType } from '@root/@types/taskContextTypes';
 import { TaskArray } from '@root/@types/tasksTypes';
-import data from '@utils/taskData';
 import { db } from '@root/firebase/clientApp';
+import { useAuth } from '@contextProviders/AuthContext';
 
 const defaultValue: TaskContextType = {
   taskArr: [],
@@ -26,69 +36,147 @@ export const useTasks = () => {
 };
 
 export const TasksProvider: FC = ({ children }) => {
-  const [taskArr, setTasksArr] = useState<TaskArray>(data);
+  const [taskArr, setTasksArr] = useState<TaskArray>([]);
+  const { user } = useAuth();
 
-  const addTask = async (inputValue: string) => {
-    setTasksArr([
-      ...taskArr,
-      { id: taskArr.length.toString(), name: inputValue, isCompleted: false },
-    ]);
-
-    const docRef = await addDoc(collection(db, 'tasks'), {
-      name: inputValue,
-      isCompleted: false,
-    });
-    console.log('Document written with ID: ', docRef.id);
+  const getTasks = () => {
+    if (user) {
+      const q = query(collection(db, user.uid), orderBy('order', 'asc'));
+      return onSnapshot(q, (querySnapshot) => {
+        const taskArr: TaskArray = [];
+        querySnapshot.forEach((doc) => {
+          taskArr.push({
+            id: doc.id,
+            name: doc.data().name,
+            isCompleted: doc.data().isCompleted,
+            order: doc.data().order,
+          });
+        });
+        setTasksArr(taskArr);
+      });
+    }
+    return () => {};
   };
 
-  const changeTaskStatus = (status: boolean, taskId: string) => {
-    const changedTaskArr = taskArr.map((task) => {
-      if (task.id === taskId) {
-        return {
-          ...task,
-          isCompleted: status,
-        };
-      }
-      return task;
-    });
+  const getActiveTasks = () => {
+    if (user) {
+      const q = query(collection(db, user.uid), where('isCompleted', '==', false));
+      onSnapshot(q, (querySnapshot) => {
+        const taskArr: TaskArray = [];
+        querySnapshot.forEach((doc) => {
+          taskArr.push({
+            id: doc.id,
+            name: doc.data().name,
+            isCompleted: doc.data().isCompleted,
+            order: doc.data().order,
+          });
+        });
+        setTasksArr(taskArr);
+      });
+    }
+  };
 
-    setTasksArr(changedTaskArr);
+  const getCompletedTasks = () => {
+    if (user) {
+      const q = query(collection(db, user.uid), where('isCompleted', '==', true));
+      onSnapshot(q, (querySnapshot) => {
+        const taskArr: TaskArray = [];
+        querySnapshot.forEach((doc) => {
+          taskArr.push({
+            id: doc.id,
+            name: doc.data().name,
+            isCompleted: doc.data().isCompleted,
+            order: doc.data().order,
+          });
+        });
+        setTasksArr(taskArr);
+      });
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = getTasks();
+    setTasksArr([]);
+    return () => {
+      unsubscribe();
+    };
+  }, [user]);
+
+  const addTask = async (inputValue: string) => {
+    if (user) {
+      await addDoc(collection(db, user.uid), {
+        name: inputValue,
+        isCompleted: false,
+        order: taskArr.length,
+      });
+    }
+  };
+
+  const changeTaskStatus = async (status: boolean, taskId: string) => {
+    if (user) {
+      const docRef = doc(db, user.uid, taskId);
+      await updateDoc(docRef, {
+        isCompleted: status,
+      });
+    }
   };
 
   const deleteCompletedTasks = () => {
-    const filteredArray = taskArr.filter((task) => !task.isCompleted);
-
-    setTasksArr(filteredArray);
+    if (user) {
+      taskArr.map((task) => {
+        if (task.isCompleted) {
+          deleteDoc(doc(db, user.uid, task.id));
+        }
+      });
+    }
   };
 
-  const deleteSingleTask = (taskId: string) => {
-    const filteredArray = taskArr.filter((task) => task.id !== taskId);
-
-    setTasksArr(filteredArray);
+  const deleteSingleTask = async (taskId: string) => {
+    if (user) {
+      await deleteDoc(doc(db, user.uid, taskId));
+    }
   };
 
   const filterAllTasks = () => {
-    setTasksArr(data);
+    getTasks();
   };
 
   const filterActiveTasks = () => {
-    const filteredArray = taskArr.filter((task) => !task.isCompleted);
-
-    setTasksArr(filteredArray);
+    getActiveTasks();
   };
 
   const filterCompletedTasks = () => {
-    const filteredArray = taskArr.filter((task) => task.isCompleted);
-
-    setTasksArr(filteredArray);
+    getCompletedTasks();
   };
 
-  const handleOnDragEnd = (result: DropResult) => {
+  const handleOnDragEnd = async (result: DropResult) => {
     const items = Array.from(taskArr);
-    const [reorderedItems] = items.splice(result.source.index, 1);
-    if (result.destination) items.splice(result.destination.index, 0, reorderedItems);
-
-    setTasksArr(items);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    if (result.destination && user) {
+      items.splice(result.destination.index, 0, reorderedItem);
+      items.forEach((item) => {
+        if (
+          item.order <= result.destination!.index &&
+          result.destination!.index > result.source.index &&
+          item.order > result.source.index
+        ) {
+          updateDoc(doc(db, user.uid, item.id), {
+            order: item.order - 1,
+          });
+        } else if (
+          result.destination!.index < result.source.index &&
+          item.order >= result.destination!.index
+        ) {
+          updateDoc(doc(db, user.uid, item.id), {
+            order: item.order + 1,
+          });
+        }
+      });
+      const docRef = doc(db, user.uid, reorderedItem.id);
+      await updateDoc(docRef, {
+        order: result.destination.index,
+      });
+    }
   };
 
   const value = {

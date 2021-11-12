@@ -2,6 +2,7 @@ export type TaskArray = {
   id: string;
   name: string;
   isCompleted: boolean;
+  order: number;
 }[];
 
 export type TaskCardType = {

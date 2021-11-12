@@ -8,7 +8,7 @@ const TaskInput = () => {
   const [inputValue, setInputValue] = useState('');
   const [isCheckboxChecked] = useState(false);
   const authCtx = useAuth();
-  const { addTask, taskArr } = useTasks();
+  const { addTask } = useTasks();
   const [id1] = useId();
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -18,7 +18,6 @@ const TaskInput = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     addTask(inputValue);
-    console.log(taskArr);
     setInputValue('');
   };
 

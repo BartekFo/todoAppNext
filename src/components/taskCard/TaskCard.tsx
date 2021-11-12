@@ -1,16 +1,20 @@
-import React, { ChangeEvent, FC, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import Checkbox from '@components/checkbox/Checkbox';
 import { VscChromeClose } from 'react-icons/vsc';
 import { Draggable, resetServerContext } from 'react-beautiful-dnd';
 import { TaskCardType } from '@root/@types/tasksTypes';
 
 const TaskCard: FC<TaskCardType> = ({
-  task: { id, name },
+  task: { id, name, isCompleted },
   index,
   changeTaskStatus,
   deleteSingleTask,
 }) => {
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+
+  useEffect(() => {
+    setIsCheckboxChecked(isCompleted);
+  }, [isCompleted]);
 
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
     setIsCheckboxChecked((prevState) => !prevState);
