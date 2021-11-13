@@ -30,7 +30,7 @@ const TaskInput = () => {
         bg-lightTheme-veryLightGray dark:bg-darkTheme-veryDarkDesaturated`}
     >
       <Checkbox isDisabled isChecked={isCheckboxChecked} />
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="w-full mr-3 mt-1">
         <input
           type="text"
           className={`
