@@ -35,7 +35,7 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Solution](https://todo-app-next-one.vercel.app/)
+- Solution URL: [Solution](https://www.frontendmentor.io/solutions/todo-created-with-nextjs-tailwindcss-and-typescript-fszz75ANG)
 - Live Site URL: [Live Site](https://todo-app-next-one.vercel.app/)
 
 ## My process
