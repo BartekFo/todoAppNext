@@ -21,13 +21,21 @@ const Navbar = () => {
 
     if (currentTheme === 'dark') {
       return (
-        <button className="cursor-pointer" type="button" onClick={() => setTheme('light')}>
+        <button
+          className="cursor-pointer order-2 sm:order-none"
+          type="button"
+          onClick={() => setTheme('light')}
+        >
           <IconSun />
         </button>
       );
     }
     return (
-      <button className="cursor-pointer" type="button" onClick={() => setTheme('dark')}>
+      <button
+        className="cursor-pointer order-2 sm:order-none"
+        type="button"
+        onClick={() => setTheme('dark')}
+      >
         <IconMoon />
       </button>
     );
@@ -44,16 +52,16 @@ const Navbar = () => {
   return (
     <nav
       className="mt-11 mx-auto sm:mt-16 px-6 sm:px-0
-      flex justify-between items-center
+      flex flex-wrap justify-between items-center gap-x-20
       text-lightTheme-veryLightGray
       max-w-screen-sm"
     >
-      <h1 className="text-3xl font-bold tracking-widest">TODO</h1>
+      <h1 className="text-3xl order-1 sm:order-none font-bold tracking-widest">TODO</h1>
       <button
         type="button"
         onClick={handleGoogleAuthClick}
-        className="py-3 px-6 rounded-md shadow-md
-          flex items-center
+        className="py-3 px-6 rounded-md shadow-md mt-4 sm:mt-0
+          flex items-center order-3 sm:order-none
           text-lightTheme-blue-veryDarkGrayish dark:text-darkTheme-darkGrayish
           bg-lightTheme-veryLightGray dark:bg-darkTheme-veryDarkDesaturated
         "
