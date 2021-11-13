@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import Checkbox from '@components/checkbox/Checkbox';
 import { useAuth } from '@contextProviders/AuthContext';
-import { useId } from 'react-id-generator';
 import { useTasks } from '@contextProviders/TaskContext';
 
 const TaskInput = () => {
@@ -9,7 +8,6 @@ const TaskInput = () => {
   const [isCheckboxChecked] = useState(false);
   const authCtx = useAuth();
   const { addTask } = useTasks();
-  const [id1] = useId();
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);

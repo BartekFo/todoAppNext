@@ -35,7 +35,6 @@
     "react-firebase-hooks": "^3.0.4",
     "react-firebaseui": "^5.0.2",
     "react-icons": "^4.3.1",
-    "react-id-generator": "^3.0.2",
     "styled-components": "^5.3.1",
     "stylelint-processor-styled-components": "^1.10.0",
     "tailwindcss": "^2.2.17"

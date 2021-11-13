@@ -2,7 +2,7 @@ import { createContext, FC, useContext, useEffect, useState } from 'react';
 import { signInWithRedirect, signOut } from 'firebase/auth';
 
 import { auth, provider } from '@root/firebase/clientApp';
-import { AuthContextType, FirebaseUser } from '@root/@types/authContextTypes';
+import { AuthContextType } from '@root/@types/authContextTypes';
 
 const defaultValue = {
   user: null,
@@ -17,7 +17,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider: FC = ({ children }) => {
-  const [user, setUser] = useState<FirebaseUser | null>(null);
+  const [user, setUser] = useState(null);
 
   const login = () => {
     signInWithRedirect(auth, provider);
